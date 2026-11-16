@@ -41,10 +41,6 @@
     "url": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/buckshot.html",
     "image": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/thumbs/buckshot.png"
   },
-  "gn-math": {
-    "url": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/gn.html",
-    "image": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/thumbs/gn.png"
-  },
   "Plants VS Zombies": {
     "url": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/plantsvszombies.html",
     "image": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/thumbs/plantsvszombies.png"
@@ -197,5 +193,9 @@
   "Super Mario Bros": {
     "url": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/mario.html",
     "image": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/thumbs/mario.png"
+  },
+  "gn-math": {
+    "url": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/gn.html",
+    "image": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/thumbs/gn.png"
   }
 }
