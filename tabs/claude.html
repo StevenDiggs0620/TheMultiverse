@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Hard lock: this page may only make network requests to your own server (via the tunnel or localhost). If the tunnel address changes, update it here and in TUNNEL below. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://sagem-intl-clusters-emails.trycloudflare.com http://localhost:8787 http://127.0.0.1:8787; img-src 'self' data:; base-uri 'none'; form-action 'none'">
-<title>Claude Chat</title>
+<title>Universe AI</title>
 <style>
-:root{--bg:#111214;--side:#0c0d0e;--panel:#1a1b1e;--hover:#202226;--text:#e8e8ea;--muted:#8d8f96;--border:#26282c;--accent:#d97757;--user:#1f2125;--code:#0a0b0c;--err:#f97066}
+:root{--bg:#111214;--side:#0c0d0e;--panel:#1a1b1e;--hover:#202226;--text:#e8e8ea;--muted:#8d8f96;--border:#26282c;--accent:#d97757;--user:#1f2125;--code:#0a0b0c;--err:#f97066;--line:color-mix(in srgb,var(--text) 16%,var(--panel));color-scheme:dark}
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{background:var(--bg);color:var(--text);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;display:flex;color-scheme:dark}
+body{background:var(--bg);color:var(--text);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",system-ui,sans-serif;display:flex}
 button{font:inherit;font-size:14px;cursor:pointer;border:1px solid var(--border);background:var(--panel);color:var(--text);border-radius:8px;padding:6px 12px}
 button:hover{border-color:var(--muted)}
 
@@ -45,7 +45,7 @@ main{flex:1;overflow-y:auto}
 .sources a{font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--border);border-radius:999px;padding:2px 10px;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sources a:hover{color:var(--text);border-color:var(--muted)}
 .cutoff{margin-top:10px;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.cutoff button{font-size:13px;padding:3px 12px;border-radius:999px;border-color:rgba(217,119,87,.45);color:var(--accent);background:transparent}
+.cutoff button{font-size:13px;padding:3px 12px;border-radius:999px;border-color:color-mix(in srgb,var(--accent) 45%,transparent);color:var(--accent);background:transparent}
 .user{background:var(--user);padding:10px 14px;border-radius:14px;margin-left:auto;max-width:85%;width:fit-content}
 .imgs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
 .user .imgs:last-child{margin-bottom:0}
@@ -71,7 +71,7 @@ details{max-width:760px;margin:0 auto 8px;font-size:13px;color:var(--muted)}
 summary{cursor:pointer;width:fit-content}
 #system{width:100%;min-height:60px;border:1px solid var(--border);border-radius:8px;margin-top:6px;padding:8px;background:var(--panel);color:var(--text);font:inherit;resize:vertical}
 .box{max-width:760px;margin:0 auto;display:flex;flex-direction:column;gap:6px;background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:10px 10px 8px;transition:border-color .15s}
-.box:focus-within{border-color:#3a3c42}
+.box:focus-within{border-color:var(--line)}
 .box.drag{border-color:var(--accent);border-style:dashed}
 #input{resize:none;border:0;outline:0;background:transparent;color:inherit;font:inherit;max-height:220px;padding:4px 6px}
 .tools{display:flex;align-items:center;gap:8px}
@@ -82,33 +82,33 @@ summary{cursor:pointer;width:fit-content}
 #pending:empty{display:none}
 .thumb{position:relative;width:64px;height:64px}
 .thumb img{width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--border);display:block}
-.thumb button{position:absolute;top:-6px;right:-6px;width:20px;height:20px;padding:0;border-radius:50%;font-size:13px;line-height:1;background:#2a2c31;color:var(--text);border-color:#3a3c42}
+.thumb button{position:absolute;top:-6px;right:-6px;width:20px;height:20px;padding:0;border-radius:50%;font-size:13px;line-height:1;background:var(--hover);color:var(--text);border-color:var(--line)}
 
 /* attach button */
 #attach{width:32px;height:32px;padding:0;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:transparent;color:var(--muted)}
-#attach:hover{color:var(--text);border-color:#3a3c42}
+#attach:hover{color:var(--text);border-color:var(--line)}
 #attach svg{width:17px;height:17px}
 
 /* web toggle: a pill with a globe and a tiny switch */
 #web{display:inline-flex;align-items:center;gap:7px;height:32px;padding:0 10px 0 9px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--muted);font-size:13px;font-weight:500;transition:color .15s,background .15s,border-color .15s}
 #web svg{width:16px;height:16px;flex-shrink:0}
-#web .sw{position:relative;width:24px;height:14px;border-radius:999px;background:#33353a;transition:background .15s}
-#web .sw::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:#8d8f96;transition:transform .15s,background .15s}
-#web:hover{color:var(--text);border-color:#3a3c42}
-#web[aria-pressed="true"]{color:var(--accent);background:rgba(217,119,87,.1);border-color:rgba(217,119,87,.45)}
-#web[aria-pressed="true"] .sw{background:rgba(217,119,87,.35)}
+#web .sw{position:relative;width:24px;height:14px;border-radius:999px;background:color-mix(in srgb,var(--text) 15%,transparent);transition:background .15s}
+#web .sw::after{content:"";position:absolute;top:2px;left:2px;width:10px;height:10px;border-radius:50%;background:var(--muted);transition:transform .15s,background .15s}
+#web:hover{color:var(--text);border-color:var(--line)}
+#web[aria-pressed="true"]{color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent);border-color:color-mix(in srgb,var(--accent) 45%,transparent)}
+#web[aria-pressed="true"] .sw{background:color-mix(in srgb,var(--accent) 35%,transparent)}
 #web[aria-pressed="true"] .sw::after{transform:translateX(10px);background:var(--accent)}
 
 /* model picker */
 .pick{position:relative}
 #modelSel{appearance:none;-webkit-appearance:none;height:32px;padding:0 28px 0 12px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-size:13px;font-weight:500;cursor:pointer}
-#modelSel:hover{border-color:#3a3c42}
+#modelSel:hover{border-color:var(--line)}
 #modelSel option{background:var(--panel);color:var(--text)}
 .pick::after{content:"";position:absolute;right:12px;top:50%;width:6px;height:6px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:translateY(-70%) rotate(45deg);pointer-events:none}
 
 #send{height:32px;min-width:64px;border-radius:999px;background:var(--accent);border-color:var(--accent);color:#fff;font-size:13px;font-weight:600;padding:0 14px}
 #send:hover{filter:brightness(1.08)}
-#send.stop{background:transparent;color:var(--text);border-color:#3a3c42}
+#send.stop{background:transparent;color:var(--text);border-color:var(--line)}
 button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .hint{max-width:760px;margin:6px auto 0;font-size:12px;color:var(--muted);text-align:center}
 .hint.warn{color:var(--err)}
@@ -135,6 +135,41 @@ body.has-pw #logout{display:inline-block}
   #menu{display:inline-block}
 }
 </style>
+<script>
+/* ---------- theme: follow The Universe's active theme ----------
+   Inside The Universe this page runs in a same-origin iframe, so it can read the
+   theme The Universe saves, and it re-colors itself when you pick another one. */
+(function () {
+  const KEY = "universe-active-theme", VARS = ["bg", "bg2", "bg3", "border", "text", "muted", "accent"];
+  function read() {
+    try { const t = JSON.parse(localStorage.getItem(KEY) || "null"); if (t && t.bg) return t; } catch {}
+    try {  // fallback: read the colors straight off the parent page
+      if (parent !== window) {
+        const cs = getComputedStyle(parent.document.documentElement), t = {};
+        VARS.forEach(k => t[k] = cs.getPropertyValue("--" + k).trim());
+        if (t.bg) return t;
+      }
+    } catch {}
+    return null;
+  }
+  function apply() {
+    const t = read();
+    if (!t || !VARS.every(k => typeof t[k] === "string" && t[k])) return;
+    const root = document.documentElement, set = (k, v) => root.style.setProperty("--" + k, v);
+    set("bg", t.bg); set("side", t.bg2); set("panel", t.bg3); set("border", t.border);
+    set("text", t.text); set("muted", t.muted); set("accent", t.accent);
+    set("hover", `color-mix(in srgb, ${t.text} 7%, ${t.bg2})`);
+    set("user", `color-mix(in srgb, ${t.accent} 12%, ${t.bg3})`);
+    set("code", `color-mix(in srgb, ${t.text} 5%, ${t.bg})`);
+    // light or dark, so native bits (scrollbars, inputs) match too
+    const n = parseInt(String(t.bg).slice(1), 16) || 0;
+    const lum = (0.299 * (n >> 16 & 255) + 0.587 * (n >> 8 & 255) + 0.114 * (n & 255)) / 255;
+    root.style.colorScheme = lum > 0.5 ? "light" : "dark";
+  }
+  apply();
+  addEventListener("storage", e => { if (e.key === KEY || e.key === null) apply(); });
+})();
+</script>
 </head>
 <body>
 <aside id="side">
@@ -145,7 +180,7 @@ body.has-pw #logout{display:inline-block}
 <div class="col">
   <header>
     <button id="menu" type="button" aria-label="Chats">☰</button>
-    <h1>Claude Chat</h1>
+    <h1>Universe AI</h1>
     <button id="logout" type="button">Log out</button>
   </header>
   <main id="scroller"><div id="log"></div></main>
@@ -177,7 +212,7 @@ body.has-pw #logout{display:inline-block}
   </footer>
 </div>
 <div id="login"><form id="loginForm">
-  <h2>Claude Chat</h2>
+  <h2>Universe AI</h2>
   <p>Enter your password to continue.</p>
   <input id="pw" type="password" autocomplete="current-password" placeholder="Password" required>
   <button type="submit">Unlock</button>
