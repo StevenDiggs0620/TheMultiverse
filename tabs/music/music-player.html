@@ -241,8 +241,8 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border:0;border-radiu
 <div class="app">
   <aside class="side">
     <div class="logo"><b>Music</b></div>
-    <a class="navi" href="#/" data-nav="home"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</a>
-    <a class="navi" href="#/library" data-nav="library"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>Library</a>
+    <button class="navi" type="button" data-nav="home" data-go="#/"><svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Home</button>
+    <button class="navi" type="button" data-nav="library" data-go="#/library"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>Library</button>
     <button class="navi" data-queue type="button"><svg viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>Queue</button>
     <div class="grow"></div>
     <div class="conn"><i></i><span>Connecting…</span></div>
@@ -252,8 +252,8 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border:0;border-radiu
     <div class="top">
       <input id="q" type="search" placeholder="Search songs, artists, albums..." autocomplete="off" spellcheck="false">
       <nav class="mnav">
-        <a class="navi" href="#/" data-nav="home">Home</a>
-        <a class="navi" href="#/library" data-nav="library">Library</a>
+        <button class="navi" type="button" data-nav="home" data-go="#/">Home</button>
+        <button class="navi" type="button" data-nav="library" data-go="#/library">Library</button>
         <button class="navi" data-queue type="button">Queue</button>
         <div class="conn"><i></i><span></span></div>
       </nav>
@@ -296,7 +296,7 @@ input[type=range]::-moz-range-thumb{width:12px;height:12px;border:0;border-radiu
    YOUR MUSIC SERVER - put the link to music_server.py here.
    Nobody using the page can change it.
    ====================================================================== */
-const SERVER_URL = "https://calculator-ourselves-foot-bid.trycloudflare.com";
+const SERVER_URL = "http://localhost:8800";
 const SERVER_KEY = "";   // only if you started the server with --key
 /* ===================================================================== */
 
@@ -730,6 +730,12 @@ function goSearch(){ const v = q.value.trim(); location.hash = v ? "#/search/" +
 q.addEventListener("input", () => { clearTimeout(searchTimer); if (q.value.trim().length > 1) searchTimer = setTimeout(goSearch, 450); });
 q.addEventListener("keydown", e => { if (e.key === "Enter"){ clearTimeout(searchTimer); goSearch(); } });
 
+/* Home / Library: switch views in place. (Real links break when The Universe
+   loads this page, because it adds a <base> link that sends them elsewhere.) */
+document.querySelectorAll("[data-go]").forEach(b => b.onclick = () => {
+  if (location.hash === b.dataset.go || (!location.hash && b.dataset.go === "#/")) render();
+  else location.hash = b.dataset.go;
+});
 window.addEventListener("hashchange", render);
 ping().then(render);
 setInterval(() => { if (!S.connected) ping().then(ok => { if (ok) render(); }); }, 5000);
