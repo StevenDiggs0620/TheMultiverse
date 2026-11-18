@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <!-- Hard lock: this page may only make network requests to your own server (via the tunnel or localhost). If the tunnel address changes, update it here and in TUNNEL below. -->
 <meta http-equiv="Content-Security-Policy" content="default-src 'none'; script-src 'unsafe-inline'; style-src 'unsafe-inline'; connect-src 'self' https://spending-graphs-refers-webpage.trycloudflare.com http://localhost:8787 http://127.0.0.1:8787; img-src 'self' data:; base-uri 'none'; form-action 'none'">
-<title>Universe AI</title>
+<title>Claude Chat</title>
 <style>
 :root{--bg:#111214;--side:#0c0d0e;--panel:#1a1b1e;--hover:#202226;--text:#e8e8ea;--muted:#8d8f96;--border:#26282c;--accent:#d97757;--user:#1f2125;--code:#0a0b0c;--err:#f97066;--line:color-mix(in srgb,var(--text) 16%,var(--panel));color-scheme:dark}
 *{box-sizing:border-box}
@@ -41,6 +41,10 @@ main{flex:1;overflow-y:auto}
 .steps div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .thinking{font-size:13px;color:var(--muted);margin-bottom:6px;animation:pulse 1.4s ease-in-out infinite}
 @keyframes pulse{50%{opacity:.4}}
+.think{margin-bottom:6px;font-size:13px;color:var(--muted)}
+.think summary:hover{color:var(--text)}
+.think summary.live{animation:pulse 1.4s ease-in-out infinite}
+.thoughts{margin-top:6px;padding:2px 0 2px 12px;border-left:2px solid var(--border);white-space:pre-wrap;max-height:360px;overflow-y:auto;line-height:1.55}
 .sources{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px}
 .sources a{font-size:12px;color:var(--muted);text-decoration:none;border:1px solid var(--border);border-radius:999px;padding:2px 10px;max-width:260px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .sources a:hover{color:var(--text);border-color:var(--muted)}
@@ -104,6 +108,7 @@ summary{cursor:pointer;width:fit-content}
 #modelSel{appearance:none;-webkit-appearance:none;height:32px;padding:0 28px 0 12px;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-size:13px;font-weight:500;cursor:pointer}
 #modelSel:hover{border-color:var(--line)}
 #modelSel option{background:var(--panel);color:var(--text)}
+#modelSel optgroup{background:var(--panel);color:var(--muted);font-style:normal}
 .pick::after{content:"";position:absolute;right:12px;top:50%;width:6px;height:6px;border-right:1.5px solid var(--muted);border-bottom:1.5px solid var(--muted);transform:translateY(-70%) rotate(45deg);pointer-events:none}
 
 #send{height:32px;min-width:64px;border-radius:999px;background:var(--accent);border-color:var(--accent);color:#fff;font-size:13px;font-weight:600;padding:0 14px}
@@ -180,7 +185,7 @@ body.has-pw #logout{display:inline-block}
 <div class="col">
   <header>
     <button id="menu" type="button" aria-label="Chats">☰</button>
-    <h1>Universe AI</h1>
+    <h1>Claude Chat</h1>
     <button id="logout" type="button">Log out</button>
   </header>
   <main id="scroller"><div id="log"></div></main>
@@ -212,7 +217,7 @@ body.has-pw #logout{display:inline-block}
   </footer>
 </div>
 <div id="login"><form id="loginForm">
-  <h2>Universe AI</h2>
+  <h2>Claude Chat</h2>
   <p>Enter your password to continue.</p>
   <input id="pw" type="password" autocomplete="current-password" placeholder="Password" required>
   <button type="submit">Unlock</button>
@@ -314,7 +319,17 @@ async function loadConfig() {
   const c = await r.json().catch(() => ({}));
   if (Array.isArray(c.models)) {
     modelSel.innerHTML = "";
-    c.models.forEach(m => modelSel.add(new Option(m.name, m.id)));
+    const groups = new Set(c.models.map(m => m.group || ""));
+    const parents = {};
+    c.models.forEach(m => {
+      let parent = modelSel;
+      if (groups.size > 1) {                                   // "Claude" / "Groq" sections
+        const g = m.group || "Other";
+        if (!parents[g]) { parents[g] = document.createElement("optgroup"); parents[g].label = g; modelSel.append(parents[g]); }
+        parent = parents[g];
+      }
+      parent.append(new Option(m.name, m.id));
+    });
     applyModel(savedModel || c.default);
   }
   document.body.classList.toggle("has-pw", !!token);
@@ -422,16 +437,33 @@ const nearBottom = () => scroller.scrollHeight - scroller.scrollTop - scroller.c
 const toBottom = () => { scroller.scrollTop = scroller.scrollHeight; };
 function host(url) { try { return new URL(url).hostname.replace(/^www\./, ""); } catch { return url; } }
 
+function thinkHTML(el, m) {
+  const thoughts = (m.thoughts || "").trim();
+  const live = m.thinking ? `Thinking…${m.thinkStart ? " " + Math.floor((Date.now() - m.thinkStart) / 1000) + "s" : ""}` : "";
+  if (!thoughts) { el._thinkScroll = undefined; return live ? `<div class="thinking">${live}</div>` : ""; }
+  const prev = el.querySelector("details.think");
+  const open = prev ? prev.open : false;                      // keep it open/closed while streaming
+  const label = live || (m.thinkSecs ? `Thought for ${m.thinkSecs}s` : "Thoughts");
+  const scroll = prev?.querySelector(".thoughts");
+  const atEnd = !scroll || scroll.scrollHeight - scroll.scrollTop - scroll.clientHeight < 30;
+  el._thinkScroll = atEnd ? Infinity : scroll.scrollTop;      // follow new thoughts unless you scrolled up
+  return `<details class="think"${open ? " open" : ""}><summary class="${m.thinking ? "live" : ""}">${label}</summary>` +
+         `<div class="thoughts">${esc(thoughts)}</div></details>`;
+}
+
 function fillAssistant(el, m) {
+  const think = thinkHTML(el, m);
   const steps = (m.steps || []).map(s => `<div>${esc(s)}</div>`).join("");
   const seen = new Set();
   const sources = (m.sources || []).filter(s => /^https?:\/\//i.test(s.url) && !seen.has(s.url) && seen.add(s.url))
     .map(s => `<a href="${escAttr(s.url)}" target="_blank" rel="noopener noreferrer" title="${escAttr(s.title + "\n" + s.url)}">${esc(host(s.url))} · ${esc(s.title)}</a>`).join("");
-  el.innerHTML = (steps ? `<div class="steps">${steps}</div>` : "") +
-    (m.thinking ? `<div class="thinking">Thinking…</div>` : "") +
+  el.innerHTML = think + (steps ? `<div class="steps">${steps}</div>` : "") +
     `<div class="body">${render(m.content || "")}</div>` +
     (sources ? `<div class="sources">${sources}</div>` : "") +
-    (m.cutoff ? `<div class="cutoff">This reply hit the length limit.<button type="button" class="continue">Continue</button></div>` : "");
+    (m.cutoff ? `<div class="cutoff">${m.cutoff === "dropped" ? "The connection dropped before this reply finished." : "This reply hit the length limit."}` +
+      `<button type="button" class="continue">Continue</button></div>` : "");
+  const t = el.querySelector(".thoughts");
+  if (t && el._thinkScroll !== undefined) t.scrollTop = el._thinkScroll === Infinity ? t.scrollHeight : el._thinkScroll;
 }
 
 function fillUser(el, m) {
@@ -558,6 +590,9 @@ function toApi(m) {
   return { role: "user", content: blocks };
 }
 
+// Send button shows "Stop" while a reply is coming in.
+function setBusy(b) { sendBtn.textContent = b ? "Stop" : "Send"; sendBtn.classList.toggle("stop", b); }
+
 /* ---------- sending ---------- */
 async function send() {
   if (ctrl) { ctrl.abort(); return; }
@@ -583,10 +618,17 @@ async function send() {
 
   log.querySelectorAll(".cutoff").forEach(c => c.remove());
   addMsg(userMsg);
-  const live = { role: "assistant", content: "", steps: [], sources: [], thinking: false, cutoff: false };
+  const live = { role: "assistant", content: "", steps: [], sources: [], thinking: false, cutoff: false, thoughts: "" };
+  const stopThinking = () => {
+    if (live.thinking && live.thinkStart) live.thinkSecs = (live.thinkSecs || 0) + Math.max(1, Math.round((Date.now() - live.thinkStart) / 1000));
+    live.thinking = false; live.thinkStart = 0;
+  };
+  // Watchdog: the server pings every 15s, so a long silence means the connection is dead.
+  const STALL_MS = 75000;
+  let lastData = Date.now(), stalled = false, gotStop = false;
   const out = addMsg(live); out.classList.add("typing");
-  ctrl = new AbortController(); sendBtn.textContent = "Stop"; sendBtn.classList.add("stop");
-  let reply = "", failed = null, raf = 0;
+  ctrl = new AbortController(); setBusy(true);
+  let reply = "", failed = null, raf = 0, res_ok = false;
   const paint = () => {
     raf = 0;
     const stick = nearBottom();
@@ -594,6 +636,10 @@ async function send() {
     if (stick) toBottom();
   };
   const schedule = () => { if (!raf) raf = requestAnimationFrame(paint); };
+  const ticker = setInterval(() => {
+    if (Date.now() - lastData > STALL_MS && ctrl) { stalled = true; ctrl.abort(); return; }
+    if (live.thinking) paint();                               // keep the "Thinking… 42s" timer moving
+  }, 1000);
 
   try {
     const res = await fetch(API + "/api/chat", {
@@ -613,46 +659,59 @@ async function send() {
       try { msg = (await res.json()).error || msg; } catch {}
       throw new Error(msg);
     }
+    res_ok = true;
     const reader = res.body.getReader(), dec = new TextDecoder();
     let buf = "";
     const handle = line => {
       if (!line.trim()) return;
       let ev; try { ev = JSON.parse(line); } catch { return; }
-      if (ev.t === "text") { reply += ev.v; live.thinking = false; }
-      else if (ev.t === "thinking") live.thinking = true;
-      else if (ev.t === "search") { live.steps.push(`🔍 Searched “${ev.v}”`); live.thinking = false; }
-      else if (ev.t === "fetch") { live.steps.push(`📄 Read ${ev.v}`); live.thinking = false; }
+      if (ev.t === "text") { reply += ev.v; stopThinking(); }
+      else if (ev.t === "thinking") {
+        if (!live.thinking) { live.thinking = true; live.thinkStart = Date.now(); }
+        if (live.thoughts.trim() && !live.thoughts.endsWith("\n\n")) live.thoughts += "\n\n";
+      }
+      else if (ev.t === "think") live.thoughts += ev.v;
+      else if (ev.t === "search") { live.steps.push(`🔍 Searched “${ev.v}”`); stopThinking(); }
+      else if (ev.t === "fetch") { live.steps.push(`📄 Read ${ev.v}`); stopThinking(); }
       else if (ev.t === "note") live.steps.push(`⚠ ${ev.v}`);
       else if (ev.t === "source") live.sources.push({ url: ev.url, title: ev.title });
-      else if (ev.t === "stop") live.cutoff = ev.v === "max_tokens";
+      else if (ev.t === "stop") { gotStop = true; live.cutoff = ev.v === "max_tokens" ? "length" : false; }
       else if (ev.t === "error") reply += `\n\n[error: ${ev.v}]`;
     };
     for (;;) {
       const { done, value } = await reader.read();
       if (done) break;
+      lastData = Date.now();
       buf += dec.decode(value, { stream: true });
       const lines = buf.split("\n"); buf = lines.pop();
       lines.forEach(handle);
       schedule();
     }
     handle(buf);
+    if (!gotStop) live.cutoff = "dropped";                    // stream ended without finishing
   } catch (e) {
-    if (e.name === "AbortError") {}
+    const started = res_ok;
+    if (e.name === "AbortError" && !stalled) {}               // you pressed Stop
+    else if (stalled || (e instanceof TypeError && started)) live.cutoff = "dropped";
     else if (e instanceof TypeError) failed = `Can't reach the server at ${API}. Is server.py running?`;
     else failed = e.message || "Request failed";
   } finally {
+    clearInterval(ticker);
     if (raf) cancelAnimationFrame(raf);
-    live.thinking = false; paint();
+    stopThinking(); paint();
     out.classList.remove("typing");
-    ctrl = null; sendBtn.textContent = "Send"; sendBtn.classList.remove("stop");
+    ctrl = null; setBusy(false);
   }
+  if (live.cutoff === "dropped" && !reply.trim() && !failed)
+    failed = "The connection dropped before Claude could answer. Send it again — and keep this page open while it works.";
 
   const visible = log.contains(out);   // false if the user switched chats mid-reply
   if (reply.trim()) {
     const msg = { role: "assistant", content: reply };
     if (live.steps.length) msg.steps = live.steps;
     if (live.sources.length) msg.sources = live.sources;
-    if (live.cutoff) msg.cutoff = true;
+    if (live.cutoff) msg.cutoff = live.cutoff;
+    if (live.thoughts.trim()) { msg.thoughts = live.thoughts.trim(); if (live.thinkSecs) msg.thinkSecs = live.thinkSecs; }
     chat.messages.push(msg);
     chat.updated = Date.now();
   } else {
