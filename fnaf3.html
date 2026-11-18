@@ -1,96 +1,38 @@
-<!DOCTYPE html>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-L7856P3VNT"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-L7856P3VNT');
+</script><!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-    <meta name="apple-mobile-web-app-capable" content="yes" />
-    <meta name="HandheldFriendly" content="true" />
+	<base href="https://cdn.jsdelivr.net/gh/blazerida/fnaf@latest/3/">
+    <link rel="stylesheet" type="text/css" href="style.css"/>
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
-    <title>FNAF 3 - HTML5</title>
-
-    <style>
-        body, html {
-            margin: 0;
-            padding: 0;
-            width: 100%;
-            height: 100%;
-            overflow: hidden;
-            background-color: #000;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        #canvasWrapper {
-            box-shadow: 0 0 20px rgba(0,0,0,0.5);
-            background: #000;
-        }
-
-        canvas {
-            display: block;
-            max-width: 100vw;
-            max-height: 100vh;
-            image-rendering: pixelated; /* Keeps the game looking sharp */
-        }
-    </style>
-
-    <script>
-        /* 1. Improved Image CORS patch */
-        const OriginalImage = window.Image;
-        window.Image = function() {
-            const img = new OriginalImage();
-            img.crossOrigin = "anonymous"; 
-            return img;
-        };
-
-        /* 2. XHR Patch for specific resource handling */
-        const origOpen = XMLHttpRequest.prototype.open;
-        XMLHttpRequest.prototype.open = function(method, url, ...args) {
-            // Ensure we aren't accidentally blocking the actual .cch file
-            if (url && url.includes('FNAF2.cc2')) {
-                this._block = true;
-            }
-            return origOpen.call(this, method, url, ...args);
-        };
-
-        const origSend = XMLHttpRequest.prototype.send;
-        XMLHttpRequest.prototype.send = function(...args) {
-            if (this._block) {
-                setTimeout(() => {
-                    Object.defineProperty(this, 'status', { value: 404 });
-                    Object.defineProperty(this, 'readyState', { value: 4 });
-                    this.dispatchEvent(new Event('load'));
-                    this.dispatchEvent(new Event('readystatechange'));
-                }, 1);
-                return;
-            }
-            return origSend.call(this, ...args);
-        };
-    </script>
-
-    <!-- Runtime Logic -->
-    <script src="C:\Users\ridge\Desktop\tuffblud\FNAF\FNAF3\src\Runtime.js"></script>
-
-    <script>
-        window.addEventListener("load", () => {
-            // Ensure the canvas exists before calling Runtime
-            const canvas = document.getElementById("MMFCanvas");
-            if (canvas) {
-                new Runtime(
-                    "MMFCanvas",
-                    "FNAF3.cch"
-                );
-            }
-        });
-    </script>
 </head>
-<body>
 
-    <div id="canvasWrapper">
-        <canvas id="MMFCanvas" width="1280" height="720">
-            Your browser does not support Canvas.
-        </canvas>
+<body>
+    <div style="display: inline-block; -webkit-user-select: none; text-align: left">
+        <canvas id="MMFCanvas" width="1280" height="720"> Your browser does not support Canvas, Please try again. </canvas>
     </div>
+    <div id="progress-container">
+        <div style="margin-bottom: 6px;">Downloading... <span id="download-text">0%</span></div>
+        <div style="width: 100%; background: #444; border-radius: 6px; overflow: hidden;">
+            <div id="download-bar" style="height: 10px; background: #3b82f6; width: 0%; transition: width 0.2s;"></div>
+        </div>
+        <div style="margin: 12px 0 6px;">Extracting... <span id="extract-text">0%</span></div>
+        <div style="width: 100%; background: #444; border-radius: 6px; overflow: hidden;">
+            <div id="extract-bar" style="height: 10px; background: #10b981; width: 0%; transition: width 0.2s;"></div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="main.js"></script>
+
 
 </body>
+
 </html>
