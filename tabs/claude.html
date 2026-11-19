@@ -36,7 +36,33 @@ header h1{font-size:15px;font-weight:600;margin:0}
 main{flex:1;overflow-y:auto}
 #log{max-width:760px;margin:0 auto;padding:24px 16px 8px}
 .msg{margin:0 0 22px;overflow-wrap:anywhere}
-.user,.msg .body{white-space:pre-wrap}
+.user{white-space:pre-wrap}
+/* formatted replies: headings, lists, tables, quotes, links */
+.msg .body{white-space:normal}
+.body>:first-child{margin-top:0}.body>:last-child{margin-bottom:0}
+.body p{margin:0 0 .85em}
+.body h1,.body h2,.body h3,.body h4,.body h5,.body h6{margin:1.15em 0 .5em;line-height:1.3;font-weight:650}
+.body h1{font-size:1.5em}.body h2{font-size:1.3em}.body h3{font-size:1.13em}.body h4,.body h5,.body h6{font-size:1em}
+.body ul,.body ol{margin:0 0 .85em;padding-left:1.6em}
+.body li{margin:.25em 0}.body li>ul,.body li>ol{margin:.25em 0}
+.body li::marker{color:var(--muted)}
+.body blockquote{margin:0 0 .85em;padding:.1em 0 .1em 1em;border-left:3px solid var(--border);color:var(--muted)}
+.body hr{border:0;border-top:1px solid var(--border);margin:1.3em 0}
+.body a{color:var(--accent);text-decoration:none}.body a:hover{text-decoration:underline}
+.body strong{font-weight:650}
+.tablewrap{overflow-x:auto;margin:0 0 .85em}
+.body table{border-collapse:collapse;font-size:14px;line-height:1.5}
+.body th,.body td{border:1px solid var(--border);padding:6px 11px;text-align:left;vertical-align:top}
+.body th{background:var(--hover);font-weight:600}
+/* attached files (PDFs, text) */
+.files{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}
+.user .files:last-child{margin-bottom:0}
+.fchip{display:inline-flex;align-items:center;gap:8px;max-width:260px;padding:6px 10px;border:1px solid var(--border);border-radius:10px;background:var(--panel);color:var(--text);font-size:13px;text-align:left}
+button.fchip:hover{border-color:var(--line)}
+.fchip svg{width:16px;height:16px;flex-shrink:0;color:var(--accent)}
+.fchip span{display:flex;flex-direction:column;min-width:0;line-height:1.25}
+.fchip b{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.fchip small{color:var(--muted);font-size:11px}
 .steps{display:flex;flex-direction:column;gap:2px;margin-bottom:6px;font-size:13px;color:var(--muted)}
 .steps div{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .thinking{font-size:13px;color:var(--muted);margin-bottom:6px;animation:pulse 1.4s ease-in-out infinite}
@@ -67,7 +93,7 @@ main{flex:1;overflow-y:auto}
 code{font:13px/1.5 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:var(--code);padding:1px 5px;border-radius:4px}
 pre code{padding:0;background:none}
 .err{color:var(--err)}
-.typing .body::after{content:"▍";color:var(--accent);animation:b 1s steps(2) infinite}
+.typing .body>:last-child::after,.typing .body:empty::after{content:"▍";color:var(--accent);animation:b 1s steps(2) infinite}
 @keyframes b{50%{opacity:0}}
 .empty{color:var(--muted);text-align:center;margin-top:22vh}
 footer{padding:8px 16px 16px}
@@ -85,6 +111,8 @@ summary{cursor:pointer;width:fit-content}
 #pending{display:flex;flex-wrap:wrap;gap:8px;padding:2px 2px 0}
 #pending:empty{display:none}
 .thumb{position:relative;width:64px;height:64px}
+.thumb.file{width:auto}
+.thumb.file .fchip{height:64px}
 .thumb img{width:64px;height:64px;object-fit:cover;border-radius:10px;border:1px solid var(--border);display:block}
 .thumb button{position:absolute;top:-6px;right:-6px;width:20px;height:20px;padding:0;border-radius:50%;font-size:13px;line-height:1;background:var(--hover);color:var(--text);border-color:var(--line)}
 
@@ -129,7 +157,10 @@ button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outlin
 #login button{height:40px;border-radius:10px;background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
 #loginErr{color:var(--err);min-height:1.2em}
 #logout{margin-left:auto;font-size:12px;padding:4px 10px;color:var(--muted);display:none}
-body.has-pw #logout{display:inline-block}
+body.has-pw #logout,body.guest #logout{display:inline-block}
+#guestBtn{display:none;background:transparent!important;border:0!important;color:var(--muted)!important;font-weight:400!important;height:auto!important}
+body.guest #guestBtn{display:block}
+#guestBtn:hover{color:var(--text)!important}
 
 /* narrow screens: sidebar slides over */
 #shade{display:none}
@@ -197,10 +228,10 @@ body.has-pw #logout{display:inline-block}
       <div id="pending"></div>
       <textarea id="input" rows="1" placeholder="Message Haiku…" autofocus></textarea>
       <div class="tools">
-        <button id="attach" type="button" title="Add images" aria-label="Add images">
+        <button id="attach" type="button" title="Add images or files" aria-label="Add images or files">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.5l-8.4 8.4a5.5 5.5 0 0 1-7.8-7.8l8.8-8.8a3.7 3.7 0 0 1 5.2 5.2l-8.8 8.8a1.8 1.8 0 0 1-2.6-2.6l8.1-8.1"/></svg>
         </button>
-        <input id="file" type="file" accept="image/*" multiple hidden>
+        <input id="file" type="file" multiple hidden>
         <button id="web" type="button" aria-pressed="true" title="Search the web and read links">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.5 2.7 3.8 5.7 3.8 9s-1.3 6.3-3.8 9c-2.5-2.7-3.8-5.7-3.8-9S9.5 5.7 12 3z"/></svg>
           Web<span class="sw" aria-hidden="true"></span>
@@ -213,7 +244,7 @@ body.has-pw #logout{display:inline-block}
         <button id="send" type="button">Send</button>
       </div>
     </div>
-    <p class="hint" id="hint">Enter to send · Shift+Enter for a new line · Paste or drop images · Chats are saved in this browser only</p>
+    <p class="hint" id="hint">Enter to send · Shift+Enter for a new line · Paste or drop images and files · Chats are saved in this browser only</p>
   </footer>
 </div>
 <div id="login"><form id="loginForm">
@@ -221,6 +252,7 @@ body.has-pw #logout{display:inline-block}
   <p>Enter your password to continue.</p>
   <input id="pw" type="password" autocomplete="current-password" placeholder="Password" required>
   <button type="submit">Unlock</button>
+  <button type="button" id="guestBtn">Continue without a password (Groq models only)</button>
   <p id="loginErr"></p>
 </form></div>
 <script>
@@ -231,8 +263,11 @@ const API = location.protocol.startsWith("http") ? location.origin : TUNNEL;
 let token = ""; try { token = localStorage.getItem("token") || ""; } catch {}
 const authHeaders = () => token ? { Authorization: "Bearer " + token } : {};
 const STORE = "haiku-chats";
+// Models to leave out of the model menu, even if the server offers them (matched by id or name).
+const HIDDEN_MODELS = ["allam-2-7b"];
+const isHidden = m => HIDDEN_MODELS.some(h => [m.id, m.name].some(v => String(v || "").toLowerCase().includes(h.toLowerCase())));
 const CONTINUE_TEXT = "Continue exactly where you left off. If you stopped inside a code block, continue the code without repeating anything.";
-const MAX_EDGE = 2000, MAX_IMAGES = 10;
+const MAX_EDGE = 2000, MAX_FILES = 10, MAX_TEXT = 1_000_000, MAX_PDF = 20_000_000;
 const $ = id => document.getElementById(id);
 const log = $("log"), list = $("list"), scroller = $("scroller"), input = $("input"), sendBtn = $("send"), sys = $("system");
 const newId = () => Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
@@ -271,7 +306,7 @@ const idbPut = (id, v) => idb("readwrite", s => s.put(v, id));
 const idbGet = id => idb("readonly", s => s.get(id));
 const idbDel = id => idb("readwrite", s => s.delete(id));
 async function loadImages(chat) {
-  const ids = chat.messages.flatMap(m => (m.images || []).map(i => i.id)).filter(id => !imgCache[id]);
+  const ids = chat.messages.flatMap(m => [...(m.images || []), ...(m.files || [])].map(i => i.id)).filter(id => !imgCache[id]);
   await Promise.all(ids.map(async id => { const v = await idbGet(id); if (v) imgCache[id] = v; }));
 }
 
@@ -317,7 +352,8 @@ async function loadConfig() {
     return r.status === 429 ? err : (token ? "Wrong password" : "need");
   }
   const c = await r.json().catch(() => ({}));
-  if (Array.isArray(c.models)) {
+  if (Array.isArray(c.models)) c.models = c.models.filter(m => !isHidden(m));
+  if (Array.isArray(c.models) && c.models.length) {
     modelSel.innerHTML = "";
     const groups = new Set(c.models.map(m => m.group || ""));
     const parents = {};
@@ -333,6 +369,8 @@ async function loadConfig() {
     applyModel(savedModel || c.default);
   }
   document.body.classList.toggle("has-pw", !!token);
+  document.body.classList.toggle("guest", c.role === "guest");
+  $("logout").textContent = c.role === "guest" ? "Log in" : "Log out";
   return "ok";
 }
 loadConfig().then(s => {
@@ -351,10 +389,13 @@ $("loginForm").addEventListener("submit", async e => {
     showLogin(s === "offline" ? "Can't reach the server." : s === "need" ? "Wrong password" : s);
   }
 });
-$("logout").addEventListener("click", () => {
+$("logout").addEventListener("click", async () => {
+  if (document.body.classList.contains("guest")) { showLogin(); return; }   // "Log in"
   token = ""; try { localStorage.removeItem("token"); } catch {}
-  document.body.classList.remove("has-pw"); showLogin();
+  document.body.classList.remove("has-pw");
+  if (await loadConfig() !== "ok") showLogin();                           // falls back to guest if allowed
 });
+$("guestBtn").addEventListener("click", () => { $("login").classList.remove("show"); $("loginErr").textContent = ""; input.focus(); });
 
 /* ---------- attaching images ---------- */
 const readAsDataURL = f => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => rej(r.error); r.readAsDataURL(f); });
@@ -376,31 +417,65 @@ async function prepImage(file) {
   return { type: "image/jpeg", data: c.toDataURL("image/jpeg", 0.85) };
 }
 
+const FILE_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>';
+const fmtSize = n => n < 1024 ? n + " B" : n < 1048576 ? Math.round(n / 1024) + " KB" : (n / 1048576).toFixed(1) + " MB";
+const extOf = name => (name.match(/\.([^.]+)$/)?.[1] || "").toLowerCase();
+const isPdf = f => f.type === "application/pdf" || extOf(f.name) === "pdf";
+
+// Text files of any kind (.txt, .html, .py, .csv…) are read as text; binary files are refused.
+async function readText(file) {
+  const buf = new Uint8Array(await file.arrayBuffer());
+  if (buf.subarray(0, 8000).includes(0)) throw new Error("binary");
+  return new TextDecoder("utf-8").decode(buf);
+}
+
 async function addFiles(files) {
   for (const f of files) {
-    if (!f.type.startsWith("image/")) { note(`${f.name || "That file"} isn't an image.`); continue; }
-    if (pending.length >= MAX_IMAGES) { note(`Up to ${MAX_IMAGES} images per message.`); break; }
-    try { pending.push({ id: newId(), ...(await prepImage(f)) }); }
-    catch { note(`Couldn't read ${f.name || "that image"}. Try a JPG or PNG.`); }
+    if (pending.length >= MAX_FILES) { note(`Up to ${MAX_FILES} attachments per message.`); break; }
+    const name = f.name || "file";
+    try {
+      if (f.type.startsWith("image/") && extOf(name) !== "svg") {
+        pending.push({ id: newId(), kind: "image", name, ...(await prepImage(f)) });
+      } else if (isPdf(f)) {
+        if (f.size > MAX_PDF) { note(`${name} is too big (PDFs up to ${fmtSize(MAX_PDF)}).`); continue; }
+        pending.push({ id: newId(), kind: "pdf", name, size: f.size, type: "application/pdf", data: await readAsDataURL(f) });
+      } else {
+        if (f.size > MAX_TEXT) { note(`${name} is too big (text files up to ${fmtSize(MAX_TEXT)}).`); continue; }
+        pending.push({ id: newId(), kind: "text", name, size: f.size, type: f.type || "text/plain", data: await readText(f) });
+      }
+    } catch (e) {
+      note(`Can't read ${name} — images, PDFs and text files (.txt, .html, .py, .csv…) work.`);
+    }
   }
   renderPending();
+}
+
+function fileChip(f, tag = "div") {
+  const c = document.createElement(tag); c.className = "fchip";
+  if (tag === "button") c.type = "button";
+  c.innerHTML = FILE_ICON + `<span><b></b><small></small></span>`;
+  c.querySelector("b").textContent = f.name;
+  c.querySelector("small").textContent = (f.kind === "pdf" ? "PDF" : (extOf(f.name) || "text").toUpperCase()) + " · " + fmtSize(f.size || 0);
+  c.title = f.name;
+  return c;
 }
 
 function renderPending() {
   const box = $("pending"); box.innerHTML = "";
   pending.forEach((p, i) => {
-    const t = document.createElement("div"); t.className = "thumb";
-    const im = new Image(); im.src = p.data; im.alt = "Image to send";
-    const x = document.createElement("button"); x.type = "button"; x.textContent = "×"; x.title = "Remove"; x.setAttribute("aria-label", "Remove image");
+    const t = document.createElement("div"); t.className = "thumb" + (p.kind === "image" ? "" : " file");
+    if (p.kind === "image") { const im = new Image(); im.src = p.data; im.alt = "Image to send"; t.append(im); }
+    else t.append(fileChip(p));
+    const x = document.createElement("button"); x.type = "button"; x.textContent = "×"; x.title = "Remove"; x.setAttribute("aria-label", "Remove attachment");
     x.onclick = () => { pending.splice(i, 1); renderPending(); };
-    t.append(im, x); box.append(t);
+    t.append(x); box.append(t);
   });
 }
 
 $("attach").addEventListener("click", () => $("file").click());
 $("file").addEventListener("change", e => { addFiles([...e.target.files]); e.target.value = ""; });
 input.addEventListener("paste", e => {
-  const files = [...(e.clipboardData?.files || [])].filter(f => f.type.startsWith("image/"));
+  const files = [...(e.clipboardData?.files || [])];
   if (files.length) addFiles(files);
 });
 const box = $("box");
@@ -418,6 +493,80 @@ document.addEventListener("drop", e => {
 /* ---------- rendering ---------- */
 const esc = s => s.replace(/[&<>]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;"}[c]));
 const escAttr = s => esc(s).replace(/"/g, "&quot;");
+// Markdown → HTML for replies: headings, **bold**, *italic*, lists, tables, quotes, links, code.
+// Everything is escaped first, so nothing a model writes can inject HTML.
+function inline(src) {
+  const codes = [];
+  let h = esc(src.replace(/`([^`\n]+)`/g, (_, c) => `\u0000${codes.push(c) - 1}\u0000`));
+  const link = (u, t) => `<a href="${u.replace(/"/g, "&quot;")}" target="_blank" rel="noopener noreferrer">${t}</a>`;
+  h = h.replace(/\[([^\]\n]+)\]\((https?:\/\/[^\s)"]+)\)/g, (_, t, u) => link(u, t))
+       .replace(/(^|[\s(])(https?:\/\/[^\s<"]+[^\s<".,;:!?)\]'])/g, (_, pre, u) => pre + link(u, u))
+       .replace(/\*\*\*([^*\n]+?)\*\*\*/g, "<strong><em>$1</em></strong>")
+       .replace(/\*\*([^*\n]+?)\*\*/g, "<strong>$1</strong>")
+       .replace(/__([^_\n]+?)__/g, "<strong>$1</strong>")
+       .replace(/(^|[^\w*])\*(?!\s)([^*\n]+?)\*(?!\w)/g, "$1<em>$2</em>")
+       .replace(/(^|[^\w])_(?!\s)([^_\n]+?)_(?!\w)/g, "$1<em>$2</em>")
+       .replace(/~~([^~\n]+?)~~/g, "<del>$1</del>");
+  return h.replace(/\u0000(\d+)\u0000/g, (_, i) => `<code>${esc(codes[i])}</code>`);
+}
+const LIST_ITEM = /^(\s*)([-*+]|\d{1,9}[.)])\s+(.*)$/;
+function parseList(lines, i) {
+  const first = lines[i].match(LIST_ITEM), base = first[1].length, ordered = /\d/.test(first[2]);
+  const start = ordered ? parseInt(first[2], 10) : 1;
+  let html = ordered ? `<ol${start !== 1 ? ` start="${start}"` : ""}>` : "<ul>", open = false;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim()) {                                         // blank line: list continues only if another item follows
+      let j = i + 1; while (j < lines.length && !lines[j].trim()) j++;
+      const nm = j < lines.length && lines[j].match(LIST_ITEM);
+      if (nm && nm[1].length >= base) { i = j; continue; }
+      break;
+    }
+    const m = line.match(LIST_ITEM), indent = line.match(/^\s*/)[0].length;
+    if (m) {
+      if (indent < base) break;
+      if (indent >= base + 2) { const r = parseList(lines, i); html += r.html; i = r.next; continue; }   // nested list
+      if (/\d/.test(m[2]) !== ordered) break;                    // bullets → numbers (or back): start a new list
+      if (open) html += "</li>";
+      html += `<li>${inline(m[3])}`; open = true; i++; continue;
+    }
+    if (indent > base && open) { html += `<br>${inline(line.trim())}`; i++; continue; }  // wrapped item text
+    break;
+  }
+  return { html: html + (open ? "</li>" : "") + (ordered ? "</ol>" : "</ul>"), next: i };
+}
+function mdBlocks(src) {
+  const lines = src.split("\n");
+  let out = "", para = [], i = 0, m;
+  const flush = () => { if (para.length) { out += `<p>${para.map(inline).join("<br>")}</p>`; para = []; } };
+  const cells = l => l.trim().replace(/^\|/, "").replace(/\|$/, "").split("|").map(c => c.trim());
+  while (i < lines.length) {
+    const line = lines[i];
+    if (!line.trim()) { flush(); i++; continue; }
+    if ((m = line.match(/^\s{0,3}(#{1,6})\s+(.*?)\s*#*\s*$/))) { flush(); out += `<h${m[1].length}>${inline(m[2])}</h${m[1].length}>`; i++; continue; }
+    if (/^\s{0,3}([-*_])(\s*\1){2,}\s*$/.test(line)) { flush(); out += "<hr>"; i++; continue; }
+    if (/^\s{0,3}>/.test(line)) {
+      flush(); const q = [];
+      while (i < lines.length && /^\s{0,3}>/.test(lines[i])) q.push(lines[i++].replace(/^\s{0,3}>\s?/, ""));
+      out += `<blockquote>${mdBlocks(q.join("\n"))}</blockquote>`; continue;
+    }
+    const sep = lines[i + 1];
+    if (line.includes("|") && sep && sep.includes("|") && sep.includes("-") && /^[\s|:\-]+$/.test(sep)) {   // table
+      flush();
+      const aligns = cells(sep).map(c => c.startsWith(":") && c.endsWith(":") ? "center" : c.endsWith(":") ? "right" : "");
+      const cell = (tag, c, k) => `<${tag}${aligns[k] ? ` style="text-align:${aligns[k]}"` : ""}>${inline(c)}</${tag}>`;
+      const head = cells(line); i += 2;
+      const rows = []; while (i < lines.length && lines[i].includes("|") && lines[i].trim()) rows.push(cells(lines[i++]));
+      out += `<div class="tablewrap"><table><thead><tr>${head.map((c, k) => cell("th", c, k)).join("")}</tr></thead>` +
+             `<tbody>${rows.map(r => `<tr>${r.map((c, k) => cell("td", c, k)).join("")}</tr>`).join("")}</tbody></table></div>`;
+      continue;
+    }
+    if (LIST_ITEM.test(line)) { flush(); const r = parseList(lines, i); out += r.html; i = r.next; continue; }
+    para.push(line.trim()); i++;
+  }
+  flush();
+  return out;
+}
 function render(text) {
   return text.split("```").map((part, i) => {
     if (i % 2) {
@@ -428,9 +577,7 @@ function render(text) {
         `<button type="button" class="cb-copy">Copy</button><button type="button" class="cb-dl">Download</button></div>` +
         `<pre><code>${esc(code)}</code></pre></div>`;
     }
-    return esc(part)
-      .replace(/`([^`\n]+)`/g, "<code>$1</code>")
-      .replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+    return mdBlocks(part);
   }).join("");
 }
 const nearBottom = () => scroller.scrollHeight - scroller.scrollTop - scroller.clientHeight < 80;
@@ -476,7 +623,25 @@ function fillUser(el, m) {
     });
     el.append(imgs);
   }
+  if (m.files?.length) {
+    const fl = document.createElement("div"); fl.className = "files";
+    m.files.forEach(f => {
+      const c = fileChip(f, imgCache[f.id] ? "button" : "div");
+      if (imgCache[f.id]) { c.title = "Download " + f.name; c.onclick = () => downloadAttachment(f); }
+      else c.querySelector("small").textContent = "Not saved in this browser";
+      fl.append(c);
+    });
+    el.append(fl);
+  }
   if (m.content) { const t = document.createElement("div"); t.textContent = m.content; el.append(t); }
+}
+function downloadAttachment(f) {
+  const d = imgCache[f.id];
+  const blob = f.kind === "pdf" ? new Blob([Uint8Array.from(atob(d.slice(d.indexOf(",") + 1)), ch => ch.charCodeAt(0))], { type: "application/pdf" })
+                                : new Blob([d], { type: "text/plain" });
+  const url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = f.name; document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
 }
 
 function addMsg(m) {
@@ -573,27 +738,33 @@ function deleteChat(id) {
   const c = chats.find(x => x.id === id);
   if (!c || !confirm(`Delete "${c.title}"?`)) return;
   if (current?.id === id) { ctrl?.abort(); current = null; renderLog(); }
-  c.messages.flatMap(m => m.images || []).forEach(im => { delete imgCache[im.id]; idbDel(im.id); });
+  c.messages.flatMap(m => [...(m.images || []), ...(m.files || [])]).forEach(im => { delete imgCache[im.id]; idbDel(im.id); });
   chats = chats.filter(x => x.id !== id);
   saveChats(); renderList();
 }
 
-// Turn a saved message into what the API expects (images go first, then the text).
+// Turn a saved message into what the API expects: images, then files, then your text.
 function toApi(m) {
-  if (m.role !== "user" || !m.images?.length) return { role: m.role, content: m.content };
-  const blocks = m.images.map(im => {
+  if (m.role !== "user" || (!m.images?.length && !m.files?.length)) return { role: m.role, content: m.content };
+  const blocks = (m.images || []).map(im => {
     const d = imgCache[im.id];
     return d ? { type: "image", source: { type: "base64", media_type: im.type, data: d.slice(d.indexOf(",") + 1) } }
              : { type: "text", text: "[An image was attached here but is no longer available.]" };
+  });
+  (m.files || []).forEach(f => {
+    const d = imgCache[f.id];
+    if (!d) blocks.push({ type: "text", text: `[The file ${f.name} was attached here but is no longer available.]` });
+    else if (f.kind === "pdf") blocks.push({ type: "document", title: f.name, source: { type: "base64", media_type: "application/pdf", data: d.slice(d.indexOf(",") + 1) } });
+    else blocks.push({ type: "text", text: `<file name="${f.name.replace(/"/g, "'")}">\n${d}\n</file>` });
   });
   if (m.content) blocks.push({ type: "text", text: m.content });
   return { role: "user", content: blocks };
 }
 
+/* ---------- sending ---------- */
 // Send button shows "Stop" while a reply is coming in.
 function setBusy(b) { sendBtn.textContent = b ? "Stop" : "Send"; sendBtn.classList.toggle("stop", b); }
 
-/* ---------- sending ---------- */
 async function send() {
   if (ctrl) { ctrl.abort(); return; }
   const text = input.value.trim();
@@ -603,15 +774,16 @@ async function send() {
   pending = []; renderPending();
 
   if (!current) {
-    current = { id: newId(), title: (text || "Image").replace(/\s+/g, " ").slice(0, 60), updated: Date.now(), messages: [] };
+    const firstName = imgs.find(p => p.kind !== "image")?.name;
+    current = { id: newId(), title: (text || firstName || "Image").replace(/\s+/g, " ").slice(0, 60), updated: Date.now(), messages: [] };
     chats.push(current);
   }
   const chat = current;
   const userMsg = { role: "user", content: text };
-  if (imgs.length) {
-    userMsg.images = imgs.map(p => ({ id: p.id, type: p.type }));
-    imgs.forEach(p => { imgCache[p.id] = p.data; idbPut(p.id, p.data); });
-  }
+  const pics = imgs.filter(p => p.kind === "image"), docs = imgs.filter(p => p.kind !== "image");
+  if (pics.length) userMsg.images = pics.map(p => ({ id: p.id, type: p.type }));
+  if (docs.length) userMsg.files = docs.map(p => ({ id: p.id, kind: p.kind, name: p.name, size: p.size, type: p.type }));
+  imgs.forEach(p => { imgCache[p.id] = p.data; idbPut(p.id, p.data); });
   chat.messages.push(userMsg);
   chat.updated = Date.now();
   saveChats(); renderList();
