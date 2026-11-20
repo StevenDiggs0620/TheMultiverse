@@ -4,4 +4,5 @@ desktop.ini
 __pycache__/
 *.py[cod]
 dist/
+dist-*/
 The-Universe-full-final-release.zip

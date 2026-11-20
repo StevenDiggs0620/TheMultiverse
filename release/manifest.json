@@ -6,19 +6,19 @@
   "upstream_repository": "https://github.com/susybakaboiii/TheUniverses",
   "upstream_snapshot_commit": "8c05c3fc83bad91313c48f39830d47b2db01e767",
   "recommended_loader": "The-Universe.html",
-  "portal_url_template": "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@8c05c3fc83bad91313c48f39830d47b2db01e767/the-universe-test.html",
+  "portal_url": "https://stevendiggs0620.github.io/TheMultiverse/universe/the-universe-test.html",
   "internet_required": true,
   "original_project_files": "Original Universe/ inside the combined release ZIP; exact-case duplicate names are retained as separate ZIP entries",
   "release_packaging_files": "The-Universe.* loaders plus START_HERE.md and manifest.json",
   "formats": {
-    "html": "Recommended. Loads the portal in a browser iframe; internet access required.",
-    "htm": "Same as HTML.",
+    "html": "User-confirmed full launcher: shows the portal in a browser frame from this repository GitHub Pages. Internet required.",
+    "htm": "Same implementation as HTML.",
     "xhtml": "XHTML iframe launcher; browser support varies.",
     "xht": "Same as XHTML.",
     "mht": "MHTML archive containing a launcher; browser support and remote iframe behavior vary.",
     "mhtml": "Same as MHT.",
-    "svg": "Uses SVG foreignObject and an iframe; browser support varies.",
-    "pdf": "Clickable link to open the portal in a browser. PDF readers cannot reliably run the portal inside the document.",
+    "svg": "User-confirmed full launcher using SVG foreignObject; support varies by browser.",
+    "pdf": "Clickable link to the GitHub Pages portal. PDF readers cannot reliably run the portal inside the document.",
     "epub": "XHTML launcher attempt plus a link; ebook readers often restrict network access, frames, or scripts.",
     "xml": "XHTML markup in an XML file; some viewers show XML source instead of rendering it.",
     "zip": "Combined release package includes the snapshot and launchers; extract it and open The-Universe.html.",
@@ -29,9 +29,51 @@
     "doc": "Legacy binary Word format is not produced by the dependency-free builder.",
     "rtf": "Clickable external link only.",
     "odt": "Clickable external link only.",
-    "pptx": "Clickable external link only; PowerPoint does not run the portal inside the presentation.",
+    "pptx": "Clickable external link only; regenerated and checked as a package. PowerPoint does not run the portal inside the presentation.",
     "ppt": "Legacy binary PowerPoint format is not produced by the dependency-free builder.",
-    "odp": "Clickable external link only; presentation software does not run the portal inside the presentation."
+    "odp": "Clickable external link only; presentation software does not run the portal inside the presentation.",
+    "mht/mhtml": "May not work: user reports both appear to do nothing."
   },
-  "rights_note": "The upstream repository has no root license file. Existing attribution and notices are preserved. No new license or ownership claim is made; bundled third-party material may have separate rights."
+  "rights_note": "The upstream repository has no root license file. Existing attribution and notices are preserved. No new license or ownership claim is made; bundled third-party material may have separate rights.",
+  "self_hosted_runtime": "docs/universe/; original-project hosting URLs rewritten to this repository GitHub Pages",
+  "hosting_note": "Original-project TheUniverses/ayosus URLs resolve to this repository. Third-party game and service hosts may remain external.",
+  "verified_categories": {
+    "full_launchers": [
+      ".html",
+      ".htm",
+      ".svg"
+    ],
+    "link_only": [
+      ".pdf",
+      ".docx",
+      ".rtf",
+      ".odt",
+      ".pptx",
+      ".odp"
+    ],
+    "may_not_work": [
+      ".xhtml",
+      ".xht",
+      ".mht",
+      ".mhtml",
+      ".epub",
+      ".xml",
+      ".zip",
+      ".webarchive",
+      ".maff",
+      ".hta",
+      ".doc",
+      ".ppt"
+    ]
+  },
+  "format_test_notes": {
+    ".html": "User confirmed this format displays the portal.",
+    ".htm": "Same HTML launcher implementation as .html.",
+    ".svg": "User confirmed this format displays the portal; browser SVG foreignObject support varies.",
+    ".mht": "User reports opening this file appears to do nothing.",
+    ".mhtml": "User reports opening this file appears to do nothing.",
+    ".pptx": "Regenerated for this release; internal package structure and hyperlink target checked. Link-only.",
+    ".zip": "Release package; extract it and open the HTML launcher. It does not auto-launch."
+  },
+  "known_upstream_issue": "The preserved catalog references thumbs/gn.png, which is absent from the upstream snapshot; this does not prevent the portal itself from loading."
 }

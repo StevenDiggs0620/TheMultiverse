@@ -13,6 +13,7 @@ import html
 import json
 from pathlib import Path
 import plistlib
+import re
 import shutil
 import zipfile
 from xml.sax.saxutils import escape
@@ -22,38 +23,89 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_SOURCE = ROOT / "upstream"
 CASE_COLLISION_SOURCE = ROOT / "upstream-case-collisions"
 DEFAULT_OUTPUT = ROOT / "dist"
-DEFAULT_URL = (
-    "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@"
-    "8c05c3fc83bad91313c48f39830d47b2db01e767/the-universe-test.html"
-)
+DEFAULT_URL = "https://stevendiggs0620.github.io/TheMultiverse/universe/the-universe-test.html"
 RELEASE_TITLE = "The Universe full final release"
+PAGES_RUNTIME = ROOT / "docs" / "universe"
+PAGES_BASE = "https://stevendiggs0620.github.io/TheMultiverse/universe/"
 
 
-def make_html(url: str, title: str, xhtml: bool = False) -> str:
+def make_html(url: str, title: str, xhtml: bool = False, hta: bool = False) -> str:
     esc_url = html.escape(url, quote=True)
     esc_title = html.escape(title)
+    hta_tag = '<hta:application id="UniverseLoader" applicationname="The Universe loader" border="thin" caption="yes" showintaskbar="yes" singleinstance="yes" sysmenu="yes" windowstate="maximize" />' if hta else ''
+    script = '''(function(){
+  var frame=document.getElementById('portal');
+  var fallback=document.getElementById('fallback');
+  var frameLoaded=false;
+  var timer=setTimeout(function(){ if(!frameLoaded) fallback.hidden=false; },10000);
+  frame.addEventListener('load',function(){ frameLoaded=true; clearTimeout(timer); fallback.hidden=true; });
+  frame.addEventListener('error',function(){ clearTimeout(timer); fallback.hidden=false; });
+  fetch(frame.src,{method:'HEAD',cache:'no-store'}).then(function(response){
+    if(!response.ok){ clearTimeout(timer); fallback.hidden=false; }
+  }).catch(function(){ if(!frameLoaded){ clearTimeout(timer); fallback.hidden=false; } });
+})();'''
     if xhtml:
         return f'''<?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en">
 <head><title>{esc_title}</title><meta charset="UTF-8" />
-<style type="text/css">html,body,iframe{{width:100%;height:100%;margin:0;border:0}}body{{background:#080611;color:white;font:16px sans-serif}}iframe{{position:fixed;inset:0;z-index:1}}p{{position:fixed;z-index:2;top:0;left:0;padding:.5rem;background:#171329}}</style>
-</head><body><p><a href="{esc_url}">Open {esc_title}</a></p>
-<iframe title="{esc_title}" src="{esc_url}"></iframe></body></html>
+<style type="text/css">html,body,iframe{{width:100%;height:100%;margin:0;border:0}}body{{background:#080611;color:white;font:16px sans-serif}}iframe{{position:fixed;inset:0;border:0}}#fallback{{position:fixed;z-index:2;top:0;left:0;padding:.4rem;background:#171329}}#fallback[hidden]{{display:none}}</style>
+</head><body>{hta_tag}<p id="fallback" hidden="hidden"><a href="{esc_url}" target="_blank" rel="noreferrer">Open The Universe in a new tab</a></p>
+<iframe id="portal" title="{esc_title}" src="{esc_url}"></iframe><script><![CDATA[{script}]]></script></body></html>
 '''
     return f'''<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{esc_title}</title><style>html,body,iframe{{width:100%;height:100%;margin:0;border:0}}body{{background:#080611;color:white;font:16px system-ui,sans-serif}}iframe{{position:fixed;inset:0;z-index:1}}p{{position:fixed;z-index:2;top:0;left:0;padding:.5rem;background:#171329}}</style></head>
-<body><p><a href="{esc_url}">Open {esc_title}</a></p><iframe title="{esc_title}" src="{esc_url}"></iframe></body></html>
+<title>{esc_title}</title>{hta_tag}<style>html,body,iframe{{width:100%;height:100%;margin:0;border:0}}body{{background:#080611;color:white;font:16px system-ui,sans-serif}}iframe{{position:fixed;inset:0;border:0}}#fallback{{position:fixed;z-index:2;top:0;left:0;padding:.4rem;background:#171329}}#fallback[hidden]{{display:none}}</style></head>
+<body><p id="fallback" hidden><a href="{esc_url}" target="_blank" rel="noreferrer">Open The Universe in a new tab</a></p><iframe id="portal" title="{esc_title}" src="{esc_url}"></iframe><script>{script}</script></body></html>
 '''
 
 
 def make_svg(url: str) -> str:
     u = html.escape(url, quote=True)
     return f'''<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="100%" height="100%" viewBox="0 0 1280 720">
- <foreignObject x="0" y="0" width="1280" height="720"><xhtml:html><xhtml:head><xhtml:meta charset="utf-8"/><xhtml:style>html,body,iframe{{width:100%;height:100%;margin:0;border:0}}body{{background:#080611;color:white;font:16px sans-serif}}iframe{{position:fixed;inset:0;z-index:1}}p{{position:fixed;z-index:2;top:0;left:0;padding:.5rem;background:#171329}}</xhtml:style></xhtml:head>
- <xhtml:body><xhtml:p><xhtml:a href="{u}">Open The Universe</xhtml:a></xhtml:p><xhtml:iframe title="The Universe" src="{u}"/></xhtml:body></xhtml:html></foreignObject>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="100%" height="100%" viewBox="0 0 1920 1080" preserveAspectRatio="none" style="display:block;background:#000">
+  <foreignObject id="fo" width="1920" height="1080" x="0" y="0">
+    <xhtml:html style="width:100%;height:100%;margin:0;padding:0;">
+      <xhtml:head>
+        <xhtml:meta charset="utf-8"/>
+        <xhtml:style>
+          *, *::before, *::after {{ box-sizing:border-box; margin:0; padding:0; }}
+          html, body {{ width:100%; height:100%; overflow:hidden; background:#000; }}
+          iframe {{ position:fixed; top:0; left:0; width:100%; height:100%; border:0; }}
+          #fallback {{ position:fixed; z-index:2; top:0; left:0; padding:.4rem; background:#171329; }}
+          #fallback[hidden] {{ display:none; }}
+        </xhtml:style>
+      </xhtml:head>
+      <xhtml:body>
+        <xhtml:p id="fallback" hidden="hidden"><xhtml:a href="{u}" target="_blank" rel="noreferrer">Open The Universe in a new tab</xhtml:a></xhtml:p>
+        <xhtml:iframe id="portal" title="The Universe" src="{u}"></xhtml:iframe>
+        <xhtml:script>
+        //<![CDATA[
+          (function() {{
+            var frame = document.getElementById('portal');
+            var fallback = document.getElementById('fallback');
+            var frameLoaded = false;
+            var timer = setTimeout(function() {{ if (!frameLoaded) fallback.hidden = false; }}, 10000);
+            frame.addEventListener('load', function() {{ frameLoaded = true; clearTimeout(timer); fallback.hidden = true; }});
+            frame.addEventListener('error', function() {{ clearTimeout(timer); fallback.hidden = false; }});
+            fetch(frame.src, {{ method:'HEAD', cache:'no-store' }}).then(function(response) {{
+              if (!response.ok) {{ clearTimeout(timer); fallback.hidden = false; }}
+            }}).catch(function() {{ if (!frameLoaded) {{ clearTimeout(timer); fallback.hidden = false; }} }});
+            function size() {{
+              var w = window.innerWidth, h = window.innerHeight;
+              var svg = document.querySelector('svg');
+              var fo = document.querySelector('foreignObject');
+              if (svg) {{ svg.setAttribute('width', w); svg.setAttribute('height', h); svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h); }}
+              if (fo) {{ fo.setAttribute('width', w); fo.setAttribute('height', h); }}
+            }}
+            size();
+            window.addEventListener('resize', size);
+          }})();
+        //]]>
+        </xhtml:script>
+      </xhtml:body>
+    </xhtml:html>
+  </foreignObject>
 </svg>
 '''
 
@@ -229,8 +281,8 @@ def make_start_here(path: Path, url: str) -> None:
 START HERE
 
 For the most reliable launch, open The-Universe.html in a current browser while online.
-The SVG and HTML-family loaders are launchers. They load the portal from this pinned
-upstream snapshot:
+The SVG and HTML-family loaders display the browser-hosted portal directly in a
+frame. If a format blocks that, use the open link to the portal:
 {url}
 
 The portal, games, and some services need an internet connection. Some linked games or
@@ -251,16 +303,16 @@ for the format-by-format notes. If one of those readers blocks the link, use the
 
 
 FORMAT_NOTES = {
-    "html": "Direct iframe launcher; recommended. Requires a browser and internet access.",
+    "html": "Recommended. Displays the portal directly in a browser frame from the GitHub Pages address; requires internet access. The new-tab fallback stays hidden on successful load and appears on a timeout or HTTP failure.",
     "htm": "Same HTML launcher as .html.",
     "xhtml": "XHTML iframe launcher; XML/XHTML support varies by browser.",
     "xht": "Same XHTML launcher as .xhtml.",
-    "mht/mhtml": "Single-part MHTML launcher; opening and remote iframe behavior vary by browser.",
-    "svg": "Uses SVG foreignObject and an iframe; browser support varies.",
-    "pdf": "Clickable external launch link. PDF readers do not reliably run the live portal inside the PDF.",
+    "mht/mhtml": "May not work: the user reports both files appear to do nothing.",
+    "svg": "Uses SVG foreignObject with a direct browser frame to the GitHub Pages portal; browser support varies. The new-tab fallback stays hidden on successful load and appears on a timeout or HTTP failure.",
+    "pdf": "Clickable link to the GitHub Pages portal. PDF readers do not reliably run the portal inside the PDF.",
     "epub": "XHTML launch attempt plus a link; ebook readers commonly restrict scripts, frames, or network access.",
     "xml": "XHTML content in an XML file; rendering varies and source may be shown instead.",
-    "zip": "Contains an HTML launcher and release guide; extract it and open index.html online.",
+    "zip": "Contains an HTML launcher and release guide; extract it and open The-Universe.html online.",
     "webarchive": "Safari WebArchive containing an HTML launcher; remote content behavior varies.",
     "maff": "ZIP-based Mozilla Archive Format attempt; requires compatible software/extension and internet access.",
     "hta": "Windows HTML Application launcher; only open if you trust the source. Windows security policy may block it.",
@@ -274,10 +326,30 @@ FORMAT_NOTES = {
 }
 
 
+def make_self_hosted_runtime(source: Path) -> None:
+    """Publish a byte-preserving tree except for project-owned URL rewrites."""
+    if PAGES_RUNTIME.exists():
+        shutil.rmtree(PAGES_RUNTIME)
+    shutil.copytree(source, PAGES_RUNTIME, ignore=shutil.ignore_patterns(".DS_Store", "Thumbs.db", "desktop.ini"))
+    jsdelivr = re.compile(r"https://cdn\.jsdelivr\.net/gh/susybakaboiii/(?:TheUniverses|ayosus)@[^/]+/")
+    raw = re.compile(r"https://raw\.githubusercontent\.com/susybakaboiii/(?:TheUniverses|ayosus)/[^/]+/")
+    for item in PAGES_RUNTIME.rglob("*"):
+        if not item.is_file():
+            continue
+        try:
+            text = item.read_text(encoding="utf-8")
+        except (UnicodeDecodeError, OSError):
+            continue
+        text = jsdelivr.sub(PAGES_BASE, text)
+        text = raw.sub(PAGES_BASE, text)
+        item.write_text(text, encoding="utf-8")
+
+
 def build(source: Path, output: Path, url: str, include_snapshot: bool) -> None:
     portal = source / "the-universe-test.html"
     if not portal.is_file():
         raise SystemExit(f"Missing upstream portal: {portal}")
+    make_self_hosted_runtime(source)
     if output.exists():
         shutil.rmtree(output)
     output.mkdir(parents=True, exist_ok=True)
@@ -288,7 +360,7 @@ def build(source: Path, output: Path, url: str, include_snapshot: bool) -> None:
         "The-Universe.xht": make_html(url, "The Universe", xhtml=True),
         "The-Universe.svg": make_svg(url),
         "The-Universe.xml": make_xml(url),
-        "The-Universe.hta": "<!doctype html>\n<html><head><meta charset=\"utf-8\"><title>The Universe</title><hta:application id=\"UniverseLoader\" applicationname=\"The Universe loader\" border=\"thin\" caption=\"yes\" showintaskbar=\"yes\" singleinstance=\"yes\" sysmenu=\"yes\" windowstate=\"maximize\"/><style>html,body,iframe{width:100%;height:100%;margin:0;border:0}body{background:#080611;color:white;font:16px sans-serif}iframe{position:fixed;inset:0}</style></head><body><p><a href=\"" + html.escape(url, quote=True) + "\">Open The Universe</a></p><iframe title=\"The Universe\" src=\"" + html.escape(url, quote=True) + "\"></iframe></body></html>\n",
+        "The-Universe.hta": make_html(url, "The Universe", hta=True),
     }
     for filename, contents in products.items():
         (output / filename).write_text(contents, encoding="utf-8")
@@ -314,11 +386,19 @@ def build(source: Path, output: Path, url: str, include_snapshot: bool) -> None:
         "upstream_creator_credit": "tasdiam (as credited by upstream README)",
         "upstream_repository": "https://github.com/susybakaboiii/TheUniverses",
         "upstream_snapshot_commit": "8c05c3fc83bad91313c48f39830d47b2db01e767",
-        "portal_loader_target": url,
+        "portal_url": url,
         "internet_required": True,
         "original_project_files": "Original Universe/ inside the combined ZIP (upstream snapshot, unmodified; exact-case duplicate names retained)",
+        "self_hosted_runtime": "docs/universe/ (upstream runtime copy; only original-project hosting URLs are rewritten to this repository's GitHub Pages)",
         "release_packaging_files": "The-Universe.* plus START_HERE.txt and manifest.json",
         "formats": FORMAT_NOTES,
+        "verified_categories": {
+            "full_launchers": [".html", ".htm", ".svg"],
+            "link_only": [".pdf", ".docx", ".rtf", ".odt", ".pptx", ".odp"],
+            "may_not_work": [".xhtml", ".xht", ".mht", ".mhtml", ".epub", ".xml", ".zip", ".webarchive", ".maff", ".hta", ".doc", ".ppt"]
+        },
+        "hosting_note": "All URLs into the original TheUniverses/ayosus repositories are redirected to this repository's GitHub Pages copy. Third-party providers and game services can remain external dependencies.",
+        "known_upstream_issue": "The preserved catalog references thumbs/gn.png, which is absent from the upstream snapshot; this does not prevent the portal itself from loading.",
         "rights_note": "No new license or ownership claim is made. Third-party games, media, and services may have separate rights.",
     }
     (output / "manifest.json").write_text(json.dumps(manifest, indent=2) + "\n", encoding="utf-8")
@@ -353,7 +433,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=DEFAULT_SOURCE, help="pristine upstream snapshot folder")
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT, help="release artifacts folder (git-ignored)")
-    parser.add_argument("--url", default=DEFAULT_URL, help="public URL for the upstream portal file")
+    parser.add_argument("--url", default=DEFAULT_URL, help="browser-rendered GitHub Pages URL for the portal")
     parser.add_argument("--include-snapshot", dest="include_snapshot", action="store_true", default=True, help="include the complete upstream tree under Original Universe/ in the ZIP (default)")
     parser.add_argument("--without-snapshot", dest="include_snapshot", action="store_false", help="build launchers only, without the upstream file tree")
     args = parser.parse_args()

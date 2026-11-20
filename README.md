@@ -2,7 +2,7 @@
 
 This repository preserves the current upstream **The Universe** project as a
 snapshot and provides a small, dependency-free tool for preparing release-only
-launchers. The repository name remains **The Multiverse**; the first prerelease
+launchers. The repository name remains **The Multiverse**; the stable release
 is titled **The Universe full final release**.
 
 ## Start here
@@ -17,8 +17,10 @@ is titled **The Universe full final release**.
 - `release/RELEASE_NOTES.md` lists format compatibility, limitations, and credits.
 - `release/manifest.json` lists release formats, requirements, and limitations.
 - `tools/build_loaders.py` builds release artifacts with Python 3's standard
-  library. Generated loaders are written under `dist/` and are not tracked by
-  Git.
+  library. Generated downloadable loaders are written under `dist/` and are not
+  tracked by Git. It also creates `docs/universe/`, a separate GitHub Pages
+  runtime copy that rewrites only URLs owned by the original project to this
+  repository’s hosted copy. The `upstream/` archive remains unchanged.
 
 Build the release bundle with:
 
@@ -28,10 +30,10 @@ python3 tools/build_loaders.py
 
 The command creates individual loaders under `dist/` and a combined ZIP beside
 that folder. The ZIP contains the original project files under `Original Universe/`
-and the launchers beside them. The primary loader is `dist/The-Universe.html`; it requires an
-internet connection and opens the unchanged portal from the pinned upstream
-snapshot, which is mirrored in this repo's `upstream/` folder. `--url` can override the portal URL when preparing a
-release from another published commit.
+and the launchers beside them. The primary loader is `dist/The-Universe.html`; it
+requires an internet connection and displays the hosted runtime through this
+repository's GitHub Pages site. Some games and services still require third-party
+hosts. `--url` can override the launcher address for another release.
 
 ## Attribution and rights
 
@@ -44,5 +46,5 @@ rights and terms; this README does not grant permission to redistribute them.
 
 The loader builder creates transparent launchers and links. It does not change
 the portal's code or bypass browser, document-reader, or operating-system
-security controls. PDF, EPUB, and office formats may only provide a link; see
+security controls. PDF and office formats provide a link; see
 `release/manifest.json` for per-format limitations.

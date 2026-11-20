@@ -1,32 +1,29 @@
 # The Universe full final release
 
-This prerelease packages the current **The Universe** project as an unchanged
-upstream snapshot, with separate launchers for convenience. It is distributed
-from the repository named **The Multiverse** while future Multiverse work is
-developed separately.
+## Start here
 
-## Open the portal
+Open **`The-Universe.html`** in a current browser while connected to the internet. It displays
+the portal in the window. **`The-Universe.svg`** is an alternative; SVG support varies by
+browser. A fallback link appears only if the portal fails to load.
 
-1. For the most dependable launch, open `The-Universe.html` in a current browser.
-2. The SVG loader is an alternative, but SVG scripting support varies by browser.
-3. Keep an internet connection available. The launchers load the portal from the
-   published snapshot, and the portal's games and services may also use online
-   resources.
+The portal runtime is hosted in this repository's GitHub Pages site. Its references to the
+original project's own file hosting are redirected to this repository. Some individual games
+or services still use third-party servers and can stop working if those services change.
 
-The combined ZIP contains the original project files in `Original Universe/`.
-They come from TheUniverses commit `8c05c3fc83bad91313c48f39830d47b2db01e767`.
-Loader files and this guide are release packaging and are not edits to that
-project snapshot. The original has names differing only by letter case; a
-case-insensitive drive may overwrite one when extracting the folder. The ZIP
-stores both original entries.
+## What's in the package
 
-PDF, EPUB, Word, and PowerPoint files provide reader-specific launch attempts or
-clickable links. They do not reliably run the live portal inside those readers.
-See `manifest.json` for all formats and known limitations. If a reader blocks a
-link or archive, use the HTML loader.
+- **Original Universe/** — pristine upstream snapshot from commit
+  `8c05c3fc83bad91313c48f39830d47b2db01e767`.
+- **The-Universe.***, this guide, release notes, and `manifest.json` — launchers and release
+  packaging created for this release.
+- The separate `docs/universe/` folder in the repository is the served runtime copy. Only
+  links to the original project's own hosted files are rewritten there.
+
+See `RELEASE_NOTES.txt` for the explicit full-launcher, link-only, and may-not-work lists.
+The `.zip` is a package and does not auto-launch; extract it and open `The-Universe.html`.
 
 ## Credit and rights
 
-The upstream README credits **tasdiam**. This release preserves upstream notices
-and makes no new claim of ownership or license. Games, music, images, and other
-third-party material may have separate rights and terms.
+The upstream README credits **tasdiam**; upstream notices are preserved. The upstream project
+has no root license file. This release makes no new ownership or redistribution claim for
+third-party games, media, or services; their terms may differ.
