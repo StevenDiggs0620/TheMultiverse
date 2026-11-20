@@ -1003,7 +1003,7 @@ async function resolveServer() {
   if (!addr && SERVER_URL && !/your-tunnel/i.test(SERVER_URL)) addr = SERVER_URL;
   // Page opened straight from server.js (http://localhost:3000)? Use that.
   if (!addr && /^https?:$/.test(location.protocol)) addr = location.origin;
-  if (!addr) { S.serverProblem = 'No chat server is set yet. Put your tunnel address in SERVER_URL at the top of chat.html.'; return; }
+  if (!addr) { S.serverProblem = 'No chat server is set yet. Put your tunnel address in SERVER_URL near the top of services/chat.html.'; return; }
   S.server = normServer(addr);
   S.httpBase = S.server.replace(/^ws/i, 'http');
 }

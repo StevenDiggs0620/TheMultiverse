@@ -1,0 +1,246 @@
+{
+  "Minecraft 1.8.8": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/eager.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/eager.png"
+  },
+  "Minecraft 1.5.2": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/eager15.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/eager15.png"
+  },
+  "Poly Bridge": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/pbridge.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/pbridge.png"
+  },
+  "Poly Bridge 2": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/pbridge2.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/pbridge2.png"
+  },
+  "Riddy Stream": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/riddystream.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/riddystream.png",
+    "desc": "may break site. reload if it does."
+  },
+  "Goop: Survivor": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/goop.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/goop.png",
+    "desc": "holy ai. riddy made ts"
+  },
+  "Hussrooms": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/huss.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/huss.png",
+    "desc": "New Update!"
+  },
+  "Half Life 1": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/happlelife.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/happlelife.png"
+  },
+  "Minecraft Story Mode": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/mcsm.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/mcsm.png"
+  },
+  "Buckshot Roulette": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/buckshot.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/buckshot.png"
+  },
+  "Team Fortress 2": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/tf2.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/tf2.png"
+  },
+  "Godzilla Daikaiju Battle Royale": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/godzilla.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/godzilla.png"
+  },
+  "Slope": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/newslope.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/Slope.png"
+  },
+  "Counter Strike: Source": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/cs.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/cs.png"
+  },
+  "Fear & Hunger": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/fearandhunger.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/fearandhunger.png"
+  },
+  "Fear & Hunger 2": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/fearandhunger2.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/fearandhunger2.png"
+  },
+  "Lethal Company": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/lethalcompany.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/lethalcompany.png"
+  },
+  "Class Of 09": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/classof09.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/classof09.png"
+  },
+  "Doom": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/doom.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/doom.png"
+  },
+  "Doom 2": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/doom2.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/doom2.png"
+  },
+  "Doom 3": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/doom3.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/doom3.png"
+  },
+  "Baldi's Basic": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/baldi.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/baldi.png"
+  },
+  "Angry Birds": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/angrybirds.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/angrybirds.png"
+  },
+  "Arctic": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/arctic.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/arctic.png"
+  },
+  "Karlson": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/karlson.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/karlson.png"
+  },
+  "Build A Big Army": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/buildarmy.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/buildarmy.png"
+  },
+  "Plants VS Zombies": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/plantsvszombies.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/plantsvszombies.png"
+  },
+  "Pokemom: Firered": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/firered.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/firered.png"
+  },
+  "Pokemon: Emerald": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/emerald.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/emerald.png"
+  },
+  "Bart Blast": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/bartblast.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/bartblast.png"
+  },
+  "Openfront": {
+    "url": "https://m6788928-byte.github.io/yoyolov/openfront/index.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/openfront.png"
+  },
+  "Stardew Valley": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/star.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/star.png"
+  },
+  "Cookie Clicker": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/cookies.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/cookies.png"
+  },
+  "Among Us": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/amongus.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/amongus.png",
+    "desc": "Latest Update | Fixed"
+  },
+  "Kerbal Space Program": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/ksp.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/ksp.png"
+  },
+  "Gang Beasts": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/gangbeasts.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/gangbeasts.png"
+  },
+  "Geometry Dash": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/geometrydash.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/geometrydash.png"
+  },
+  "Retro Bowl": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/retrobowl.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/retrobowl.png"
+  },
+  "Retro Bowl: College": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/retrobowlcollege.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/retrobowlcollege.png"
+  },
+  "Snow Rider 3D": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/snowrider.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/snowrider.png"
+  },
+  "PEAK": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/peak.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/peak.png"
+  },
+  "GTA III": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/gta3.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/gta3.png"
+  },
+  "Aviassembly": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/avi.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/avi.png"
+  },
+  "Resident Evil": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/residentevil.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/residentevil.png"
+  },
+  "Resident Evil 2": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/residentevil2.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/residentevil2.png"
+  },
+  "2048": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/2048.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/2048.png"
+  },
+  "Cheese Rolling": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/cheese2.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/cheese.png"
+  },
+  "Age of Conflict": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/conflict.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/conflict.png"
+  },
+  "Bendy And The Ink Machine": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/bendy.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/bendy.png"
+  },
+  "Hollow Knight": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/hollowknight.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/hollowknight.png"
+  },
+  "Granny": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/granny.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/granny.png"
+  },
+  "Granny 2": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/granny2.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/granny2.png"
+  },
+  "Five Nights at Freddy's": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/fnaf.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/fnaf.png"
+  },
+  "Five Nights at Freddy's 2": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/fnaf2.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/fnaf2.png"
+  },
+  "Five Nights at Freddy's 3": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/fnaf3.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/fnaf3.png"
+  },
+  "Five Nights at Freddy's 4": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/fnaf4.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/fnaf4.png"
+  },
+  "Wordle": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/wordle.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/wordle.png"
+  },
+  "Super Mario 64": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/sm64.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/sm64.png"
+  },
+  "Super Mario Bros": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/mario.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/mario.png"
+  },
+  "gn-math": {
+    "url": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/games/gn.html",
+    "image": "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/assets/thumbs/gn.svg"
+  }
+}

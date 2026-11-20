@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xhtml="http://www.w3.org/1999/xhtml" width="100%" height="100%" viewBox="0 0 1920 1080" role="img" aria-label="The Multiverse">
+  <foreignObject id="fo" width="1920" height="1080" x="0" y="0">
+    <xhtml:html xmlns="http://www.w3.org/1999/xhtml" style="width:100%;height:100%;margin:0;padding:0;">
+      <xhtml:head>
+        <xhtml:meta charset="utf-8"/>
+        <xhtml:style>
+          *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+          html, body { width: 100%; height: 100%; overflow: hidden; background: #000; }
+          iframe { position: fixed; inset: 0; width: 100%; height: 100%; border: 0; }
+          #message { position: fixed; inset: 0; display: grid; place-items: center;
+            color: #eee; background: #111; font: 16px system-ui, sans-serif; padding: 2rem; text-align: center; }
+        </xhtml:style>
+      </xhtml:head>
+      <xhtml:body>
+        <xhtml:div id="message">Loading The Multiverse…</xhtml:div>
+        <xhtml:iframe id="portal" title="The Multiverse" src="about:blank"></xhtml:iframe>
+        <xhtml:script>
+        //<![CDATA[
+          (function () {
+            const pageUrl = 'https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/portal/the-universe-test.html';
+            const frame = document.getElementById('portal');
+            const message = document.getElementById('message');
+            function resize() {
+              const width = window.innerWidth, height = window.innerHeight;
+              const svg = document.querySelector('svg'), fo = document.querySelector('foreignObject');
+              if (svg) { svg.setAttribute('width', width); svg.setAttribute('height', height); svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height); }
+              if (fo) { fo.setAttribute('width', width); fo.setAttribute('height', height); }
+            }
+            resize();
+            window.addEventListener('resize', resize);
+            fetch(pageUrl).then(function (response) {
+              if (!response.ok) throw new Error('HTTP ' + response.status);
+              return response.text();
+            }).then(function (html) {
+              const doc = frame.contentDocument || frame.contentWindow.document;
+              doc.open(); doc.write(html); doc.close();
+              message.style.display = 'none';
+            }).catch(function (error) {
+              message.textContent = 'Could not load The Universe. Make sure the fork\'s main branch is published, then reopen this SVG. (' + error.message + ')';
+              frame.style.display = 'none';
+            });
+          })();
+        //]]>
+        </xhtml:script>
+      </xhtml:body>
+    </xhtml:html>
+  </foreignObject>
+</svg>

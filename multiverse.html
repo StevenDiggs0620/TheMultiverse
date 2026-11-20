@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>The Multiverse Loader</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body, iframe { width: 100%; height: 100%; margin: 0; border: 0; }
+    body { overflow: hidden; background: #000; font: 15px system-ui, sans-serif; }
+    iframe { position: fixed; inset: 0; display: block; }
+    #message { position: fixed; z-index: 1; inset: 0; display: grid; place-items: center;
+      padding: 2rem; color: #eee; background: #111; text-align: center; }
+  </style>
+</head>
+<body>
+  <div id="message">Loading The Universe…</div>
+  <iframe id="portal" title="The Universe" src="about:blank"></iframe>
+  <script>
+    (() => {
+      const pageUrl = 'https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/portal/the-universe-test.html';
+      const frame = document.getElementById('portal');
+      const message = document.getElementById('message');
+
+      fetch(pageUrl).then(response => {
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return response.text();
+      }).then(html => {
+        const doc = frame.contentDocument || frame.contentWindow.document;
+        doc.open();
+        doc.write(html);
+        doc.close();
+        message.hidden = true;
+      }).catch(error => {
+        message.textContent = `Could not load The Universe. Make sure the fork's main branch is published, then try again. (${error.message})`;
+        frame.hidden = true;
+      });
+    })();
+  </script>
+</body>
+</html>

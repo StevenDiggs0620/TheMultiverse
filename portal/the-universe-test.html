@@ -570,7 +570,7 @@
    An entry can also be an object for a custom tile:
      "Name": { "url": "...", "image": "...", "desc": "subtitle text" }
    ====================================================================== */
-const LIST_URL = "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/tas6.json";
+const LIST_URL = "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/data/catalogs/tas6.json";
 
 /* ======================================================================
    Your own server (server.js). Its /games.json is loaded too and merged
@@ -590,7 +590,7 @@ const SERVER_LIST_URL = SERVER_URL ? SERVER_URL.replace(/\/+$/, '') + '/games.js
      \n  for a line break     \t  for a tab     \\  for a real backslash
    MESSAGE_SECONDS is how long each message stays up.
    ====================================================================== */
-const MESSAGES_URL = "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/messages.txt";
+const MESSAGES_URL = "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/data/messages.txt";
 const MESSAGE_SECONDS = 6;
 /* ===================================================================== */
 
@@ -604,11 +604,11 @@ const MESSAGE_SECONDS = 6;
      { name: "Tools", url: "https://example.com/tools.html" },
    ====================================================================== */
 const CUSTOM_TABS = [
-     { name: "Movies", url: "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/tabs/moves/move.html" },
-     { name: "Music", url: "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/tabs/music/music-player.html" },
-     { name: "Chat", url: "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/chat.html" },
-     { name: "AI", url: "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/tabs/claude.html" },
-     { name: "Tas Proxy", url: "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/tabs/tas.html" }
+     { name: "Movies", url: "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/tabs/moves/move.html" },
+     { name: "Music", url: "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/tabs/music/music-player.html" },
+     { name: "Chat", url: "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/services/chat.html" },
+     { name: "AI", url: "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/tabs/claude.html" },
+     { name: "Tas Proxy", url: "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/tabs/tas.html" }
   // { name: "Tools", url: "https://example.com/tools.html" },
   // { name: "More Games", url: "https://example.com/games.html" },
 ];
@@ -622,7 +622,7 @@ const CUSTOM_TABS = [
    malformed JSON all fail OPEN so a GitHub outage doesn't brick this for
    everyone.
    ====================================================================== */
-const STATUS_URL = "https://cdn.jsdelivr.net/gh/susybakaboiii/TheUniverses@main/status_new.json";
+const STATUS_URL = "https://cdn.jsdelivr.net/gh/StevenDiggs0620/TheMultiverse@main/data/status/status_new.json";
 /* ===================================================================== */
 
 const $ = id => document.getElementById(id);
