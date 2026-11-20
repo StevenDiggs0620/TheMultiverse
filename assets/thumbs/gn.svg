@@ -1,6 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-label="GN Math">
-<defs><linearGradient id="g" x2="1" y2="1"><stop stop-color="#6941c6"/><stop offset="1" stop-color="#172554"/></linearGradient></defs>
-<rect width="320" height="320" rx="28" fill="url(#g)"/>
-<text x="160" y="178" fill="#fff" font-family="system-ui,sans-serif" font-size="72" font-weight="700" text-anchor="middle">GN</text>
-<text x="160" y="226" fill="#dbeafe" font-family="system-ui,sans-serif" font-size="24" text-anchor="middle">MATH</text>
-</svg>
