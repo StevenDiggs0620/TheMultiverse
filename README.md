@@ -14,6 +14,7 @@ is titled **The Universe full final release**.
   both names in the same folder. The release builder puts both exact names in
   the ZIP. Do not edit either snapshot folder as part of future Multiverse work.
 - `release/START_HERE.md` explains what users receive and how to launch it.
+- `release/RELEASE_NOTES.md` lists format compatibility, limitations, and credits.
 - `release/manifest.json` lists release formats, requirements, and limitations.
 - `tools/build_loaders.py` builds release artifacts with Python 3's standard
   library. Generated loaders are written under `dist/` and are not tracked by

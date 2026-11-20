@@ -304,6 +304,9 @@ def build(source: Path, output: Path, url: str, include_snapshot: bool) -> None:
     make_odt(url, output / "The-Universe.odt")
     make_odp(url, output / "The-Universe.odp")
     make_start_here(output / "START_HERE.txt", url)
+    notes_source = ROOT / "release" / "RELEASE_NOTES.md"
+    notes = notes_source.read_text(encoding="utf-8") if notes_source.is_file() else "See START_HERE.txt and manifest.json.\n"
+    (output / "RELEASE_NOTES.txt").write_text(notes, encoding="utf-8")
     manifest = {
         "release": RELEASE_TITLE,
         "project": "The Multiverse",
