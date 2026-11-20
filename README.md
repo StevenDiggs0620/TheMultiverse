@@ -1,37 +1,47 @@
 # The Multiverse
 
-The Multiverse is a fork of [TheUniverses](https://github.com/susybakaboiii/TheUniverses). It keeps the upstream portal and its game/service features while organizing the repository for future changes.
+This repository preserves the current upstream **The Universe** project as a
+snapshot and provides a small, dependency-free tool for preparing release-only
+launchers. The repository name remains **The Multiverse**; the first prerelease
+is titled **The Universe full final release**.
 
 ## Start here
 
-- multiverse.svg — SVG loader for the current portal.
-- multiverse.html — HTML loader for the same portal.
-- portal/the-universe-test.html — current full-featured portal source.
-- portal/the_universe.html — earlier stripped-down portal source.
+- `upstream/` mirrors the upstream file tree from TheUniverses commit
+  `8c05c3fc83bad91313c48f39830d47b2db01e767`. The upstream has two case-only
+  filename collisions (`PEAK`/`peak`); their original uppercase versions are
+  preserved in `upstream-case-collisions/` because this Mac volume cannot store
+  both names in the same folder. The release builder puts both exact names in
+  the ZIP. Do not edit either snapshot folder as part of future Multiverse work.
+- `release/START_HERE.md` explains what users receive and how to launch it.
+- `release/manifest.json` lists release formats, requirements, and limitations.
+- `tools/build_loaders.py` builds release artifacts with Python 3's standard
+  library. Generated loaders are written under `dist/` and are not tracked by
+  Git.
 
-The loaders fetch the portal from the main branch through jsDelivr. Publish the repository before expecting the loaders to resolve. For a direct source edit, work in portal/; the game catalog used by the full portal is data/catalogs/tas6.json.
+Build the release bundle with:
 
-## Repository layout
+```sh
+python3 tools/build_loaders.py
+```
 
-- games/ — standalone game wrapper pages.
-- services/ — chat and TAS viewer pages.
-- tabs/ — portal tabs, music, movies, and supporting data.
-- assets/thumbs/ — game thumbnails.
-- assets/ruffle/ — bundled Ruffle runtime and license notices.
-- assets/godzilla/ — multipart Godzilla asset files.
-- assets/source-svg/ — supplied SVG reference.
-- data/catalogs/ — game list JSON files and legacy catalog variants.
-- data/status/ — status/availability JSON files.
-- data/messages.txt — rotating portal messages.
-- docs/screenshots/ — screenshots from the upstream project.
-- tools/ — repository helper scripts.
+The command creates individual loaders under `dist/` and a combined ZIP beside
+that folder. The ZIP contains the original project files under `Original Universe/`
+and the launchers beside them. The primary loader is `dist/The-Universe.html`; it requires an
+internet connection and opens the unchanged portal from the pinned upstream
+snapshot, which is mirrored in this repo's `upstream/` folder. `--url` can override the portal URL when preparing a
+release from another published commit.
 
-Game wrappers use explicit upstream base URLs where needed so moving them into games/ does not change their asset origins. Catalog entries point to this fork and the new paths.
+## Attribution and rights
 
-## Attribution and asset rights
+The upstream README credits **tasdiam**. This is a fork of
+[TheUniverses](https://github.com/susybakaboiii/TheUniverses); the upstream tree
+and its existing notices are preserved. No root license was present in the
+upstream snapshot. The repository does not claim ownership of third-party games,
+music, images, or other bundled material. Those materials may have separate
+rights and terms; this README does not grant permission to redistribute them.
 
-This is a fork of TheUniverses by susybakaboiii; its README credits tasdiam. The upstream repository has no root license file. Game pages, music, images, and other bundled materials may have separate rights. This repository does not claim ownership of third-party content. Check source and license terms before redistributing a release. Ruffle's license notices are in assets/ruffle/.
-
-## Local housekeeping
-
-.DS_Store, Thumbs.db, and desktop.ini are ignored. Same-content duplicate game wrappers were consolidated after verifying their file hashes; legacy JSON catalog variants remain in place to avoid breaking older references.
+The loader builder creates transparent launchers and links. It does not change
+the portal's code or bypass browser, document-reader, or operating-system
+security controls. PDF, EPUB, and office formats may only provide a link; see
+`release/manifest.json` for per-format limitations.
